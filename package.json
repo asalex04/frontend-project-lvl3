@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/asalex04/frontend-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/asalex04/frontend-project-lvl3/actions)",
-  "main": "",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
