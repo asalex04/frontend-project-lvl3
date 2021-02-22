@@ -22,4 +22,8 @@ module.exports = {
       template: './src/index.html',
     }),
   ],
+  
+  performance: {
+    hints: false
+  }
 };
