@@ -53,7 +53,6 @@ export default () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const link = formData.get('url');
-    console.log(state);
     try {
       updateValidationState(link, watchedState);
       watchedState.form.processState = 'sending';

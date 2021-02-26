@@ -1,5 +1,7 @@
+import renderPosts from './renderPosts.js';
+
 export default (state, path, elements) => {
-  const { input, addButton, feedback, feedSection, postSection } = elements;
+  const { input, addButton, feedback, feedSection } = elements;
 
   const renderFeeds = (state, elements) => {
     const { feedSection } = elements;
@@ -21,26 +23,6 @@ export default (state, path, elements) => {
     });
     feedSection.append(h2);
     feedSection.append(ul);
-  };
-
-  const renderPosts = (state, elements) => {
-    const { postSection } = elements;
-    postSection.innerHTML = '';
-    const h2 = document.createElement('h2');
-    const ul = document.createElement('ul');
-    h2.textContent = 'Посты';
-    ul.className = 'list-group';
-    state.data.posts.map((post) => {
-      console.log('tets');
-      const li = document.createElement('li');
-      li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
-      const a = document.createElement('a');
-      a.innerText = post.title;
-      a.className = 'font-weight-bold';
-      li.append(a);
-    });
-    postSection.append(h2);
-    postSection.append(ul);
   };
 
   const renderErrors = (state) => {
@@ -88,7 +70,6 @@ export default (state, path, elements) => {
         break;
     }
   };
-
 
   switch (path) {
     case 'form.processState':
