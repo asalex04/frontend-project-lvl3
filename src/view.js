@@ -1,7 +1,7 @@
 import renderPosts from './renderPosts.js';
 
 export default (state, path, elements) => {
-  const { input, addButton, feedback, feedSection } = elements;
+  const { input, addButton, feedback } = elements;
 
   const renderFeeds = (state, elements) => {
     const { feedSection } = elements;
