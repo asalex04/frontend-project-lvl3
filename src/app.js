@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import i18next from 'i18next';
 import * as yup from 'yup';
 import axios from 'axios';
 import view from './view.js';

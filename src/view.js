@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import renderPosts from './renderPosts.js';
 
 export default (state, path, elements) => {
@@ -32,7 +33,7 @@ export default (state, path, elements) => {
     if (errors === 'duplicated link') {
       feedback.textContent = 'RSS уже загружен';
     } else {
-      feedback.textContent = 'Ссылка должна быть валидным URL';
+      feedback.textContent = i18next.t('errors.url');
     }
   };
 
