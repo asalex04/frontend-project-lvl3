@@ -28,7 +28,6 @@ export default (state, path, elements) => {
 
   const renderErrors = (state) => {
     const { errors } = state.form;
-    console.log(errors);
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
     feedback.textContent = i18next.t(`errors.${errors}`);
