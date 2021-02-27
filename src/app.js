@@ -56,6 +56,8 @@ export default () => {
     view(state, path, elements);
   });
   
+  updateFeeds(watchedState);
+  
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
