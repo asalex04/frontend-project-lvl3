@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import i18next from 'i18next';
 import * as yup from 'yup';
 import axios from 'axios';
 import view from './view.js';
@@ -13,7 +12,7 @@ const validate = (data, feeds) => {
   const schema = yup
     .string()
     .url()
-    .notOneOf(links, 'duplicated link');
+    .notOneOf(links, 'notNewUrl');
   return schema.validateSync(data);  
 };
 
@@ -36,7 +35,14 @@ export default () => {
       posts: [],
     },
   };
-
+  yup.setLocale({
+    string: {
+      url: 'notUrl',
+    },
+    mixed: {
+      required: 'requierd',
+    }
+  });
   const form = document.querySelector('.rss-form');
   const elements = {
     input: document.querySelector('.form-control'),

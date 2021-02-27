@@ -28,19 +28,16 @@ export default (state, path, elements) => {
 
   const renderErrors = (state) => {
     const { errors } = state.form;
+    console.log(errors);
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
-    if (errors === 'duplicated link') {
-      feedback.textContent = 'RSS уже загружен';
-    } else {
-      feedback.textContent = i18next.t('errors.url');
-    }
+    feedback.textContent = i18next.t(`errors.${errors}`);
   };
 
   const renderSuccess = () => {
     feedback.classList.add('text-success');
     feedback.classList.remove('text-danger');
-    feedback.textContent = 'RSS успешно загружен';
+    feedback.textContent = i18next.t('msg.success');
     input.classList.remove('is-invalid');    
   };
 
