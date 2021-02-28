@@ -3,9 +3,11 @@ import * as yup from 'yup';
 import axios from 'axios';
 import view from './view.js';
 import onChange from 'on-change';
-import parser from './parser.js';
+import parser from './parser.js'
+import proxyUrl from './utils.js'
+import updateFeeds from './updateFeeds.js';
 
-const proxy = 'https://hexlet-allorigins.herokuapp.com';
+// const proxy = 'https://hexlet-allorigins.herokuapp.com';
 
 const validate = (data, feeds) => {
   const links = feeds.map((feed) => feed.link);
@@ -33,6 +35,8 @@ export default () => {
     data: {
       feeds: [],
       posts: [],
+      newposts: [],
+      diffposts: [],
     },
   };
   yup.setLocale({
@@ -66,7 +70,7 @@ export default () => {
       updateValidationState(link, watchedState);
       watchedState.form.processState = 'sending';
 
-      axios.get(`${proxy}/get?url=${encodeURIComponent(link)}`)
+      axios.get(proxyUrl(link))
         .then((response) => {
           const feed = parser(response.data.contents);
           const feedId = _.uniqueId();
@@ -90,4 +94,6 @@ export default () => {
         watchedState.form.processState = 'failed';
       }
   });
+  
+  setTimeout(() => updateFeeds(state), 5000);
 };
