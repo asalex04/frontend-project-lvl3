@@ -10,7 +10,7 @@ export default (state, elements) => {
       <ul class='list-group'>
         <li class='list-group-item d-flex justify-content-between align-items-start'>
           <a href='${elem.link}' class='font-weight-bold' data-id='${elem.postId}' target='_blank'>${elem.title}</a>
-          <button type='button' class='btn btn-primary btn-sm' data-id=${elem.postId}' data-toggle='modal' data-target='#modal'>Просмотр</button>
+          <button type='button' class='btn btn-primary btn-sm' data-id=${elem.postId} data-toggle='modal' data-target='#modal'>Просмотр</button>
         </li>
       </ul>
       `;

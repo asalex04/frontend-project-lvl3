@@ -1,13 +1,12 @@
 import _ from 'lodash';
 import * as yup from 'yup';
 import axios from 'axios';
-import view from './view.js';
 import onChange from 'on-change';
+import 'bootstrap';
+import view from './view.js';
 import parser from './parser.js'
 import proxyUrl from './utils.js'
 import updateFeeds from './updateFeeds.js';
-
-// const proxy = 'https://hexlet-allorigins.herokuapp.com';
 
 const validate = (data, feeds) => {
   const links = feeds.map((feed) => feed.link);
@@ -35,9 +34,9 @@ export default () => {
     data: {
       feeds: [],
       posts: [],
-      newposts: [],
-      diffposts: [],
     },
+    modal: null,
+    readPosts: [],
   };
   yup.setLocale({
     string: {
@@ -54,6 +53,10 @@ export default () => {
     feedback: document.querySelector('.feedback'),
     feedSection: document.querySelector('.feeds'),
     postSection: document.querySelector('.posts'),
+    titleModal: document.querySelector('.modal-title'),
+    body: document.querySelector('.modal-body'),
+    article: document.querySelector('.full-article'),
+
   };
   
   const watchedState = onChange (state, (path) => {
@@ -94,6 +97,12 @@ export default () => {
         watchedState.form.processState = 'failed';
       }
   });
-  
+
+  elements.postSection.addEventListener('click', (e) => {
+    const { id } = e.target.dataset;
+    const currentPost = watchedState.data.posts[0].find((post) => post.postId === id);
+    watchedState.modal = currentPost;
+    watchedState.readPosts.push(id);
+  })
   setTimeout(() => updateFeeds(state), 5000);
 };

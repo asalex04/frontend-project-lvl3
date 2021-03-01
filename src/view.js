@@ -2,7 +2,7 @@ import i18next from 'i18next';
 import renderPosts from './renderPosts.js';
 
 export default (state, path, elements) => {
-  const { input, addButton, feedback } = elements;
+  const { input, addButton, feedback, titleModal, body, article } = elements;
 
   const renderFeeds = (state, elements) => {
     const { feedSection } = elements;
@@ -40,6 +40,16 @@ export default (state, path, elements) => {
     input.classList.remove('is-invalid');    
   };
 
+  const renderModal = (state) => {
+    const { title, description, link, postId } = state.modal;
+    const currLink = document.querySelector(`[data-id = '${postId}']`);
+    currLink.classList.remove('font-weight-bold');
+    currLink.className = 'font-weight-normal';
+    titleModal.textContent = title;
+    body.textContent = description;
+    article.href = link;
+  }
+
   const processStateHandler = (state) => {
     const { processState } = state.form;
     switch (processState) {
@@ -76,6 +86,9 @@ export default (state, path, elements) => {
       if (!state.form.valid) {
         renderErrors(state);
       }
+      break;
+    case 'modal':
+      renderModal(state);
       break;
     default:
       break;

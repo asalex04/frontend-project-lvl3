@@ -5,7 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Webpack Package</title>
   </head>
-  <body>
+  <body class='d-flex flex-column min-vh-100'>
+    <div class="modal fade" id="modal" tabindex="-1" role='dialog' aria-labelledby="modal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">X</span>
+            </button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <a class="btn btn-primary full-article" href="#" role="button" target="_blank" rel="noopener noreferrer">Read completely</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <main class="flex-grow-1">
       <section class="container-fluid bg-dark p-5 ">
         <div class="row">
