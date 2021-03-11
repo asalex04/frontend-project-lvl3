@@ -4,7 +4,6 @@ import proxyUrl from './utils.js';
 import parser from './parser.js'
 
 const updateFeeds = (state) => {
-  console.log('test');
   const { feeds, posts } = state.data;
   const promises = feeds.map((feed) => {
     axios.get(proxyUrl(feed.link))

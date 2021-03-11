@@ -8,9 +8,12 @@ import proxyUrl from './utils.js'
 import updateFeeds from './updateFeeds.js';
 
 const validate = (data, feeds) => {
-  const schema = yup.string().url().required();
   const links = feeds.map((feed) => feed.link);
-  return schema.notOneOf(links, 'notNewUrl').validateSync(data);  
+  const schema = yup
+    .string()
+    .url()
+    .notOneOf(links, 'notNewUrl');
+  return schema.validateSync(data);  
 };
 
 const updateValidationState = (link, watchedState) => {
