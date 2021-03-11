@@ -2,19 +2,15 @@ import _ from 'lodash';
 import * as yup from 'yup';
 import axios from 'axios';
 import onChange from 'on-change';
-import 'bootstrap';
 import view from './view.js';
 import parser from './parser.js'
 import proxyUrl from './utils.js'
 import updateFeeds from './updateFeeds.js';
 
 const validate = (data, feeds) => {
+  const schema = yup.string().url().required();
   const links = feeds.map((feed) => feed.link);
-  const schema = yup
-    .string()
-    .url()
-    .notOneOf(links, 'notNewUrl');
-  return schema.validateSync(data);  
+  return schema.notOneOf(links, 'notNewUrl').validateSync(data);  
 };
 
 const updateValidationState = (link, watchedState) => {
@@ -27,7 +23,6 @@ export default () => {
   const state = {
     form: {
       processState: 'filling',
-      processError: null,
       valid: true,
       errors: {},
     },
@@ -90,7 +85,14 @@ export default () => {
           }));
           state.data.posts.unshift(newPosts);
           watchedState.form.processState = 'finished';
-          watchedState.form.processError = null;
+        })
+        .catch((error) => {
+          if (error.request) {
+            watchedState.form.errors = 'requestError';
+          } else if (error.response) {
+            watchedState.form.errors = 'responseError';
+          }
+          watchedState.form.errors = 'error';
         });
       } catch (error) {
         watchedState.form.errors = error.message;
@@ -104,5 +106,4 @@ export default () => {
     watchedState.modal = currentPost;
     watchedState.readPosts.push(id);
   })
-  setTimeout(() => updateFeeds(state), 5000);
 };

@@ -1,10 +1,11 @@
+import i18next from 'i18next';
 import _ from 'lodash';
 
 export default (state, elements) => {
   const { postSection } = elements;
   const { posts } = state.data;
   const title = document.createElement('h2');
-  title.innerText = 'Посты';
+  title.textContent = i18next.t('posts');
   const container = _.flatten(posts).map((elem) => {
     const post = `
       <ul class='list-group'>

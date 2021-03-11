@@ -7,6 +7,11 @@ export default {
       notUrl: 'The link must be a valid URL',
       notNewUrl: 'RSS already loaded',
       requierd: 'URL is required',
+      requestError: 'Network error',
+      responseError: 'Server error',
+      error: 'This is not RSS',
     },
+    feeds: 'Feeds',
+    posts: 'Posts',
   },
 };

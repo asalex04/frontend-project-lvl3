@@ -4,9 +4,9 @@ import proxyUrl from './utils.js';
 import parser from './parser.js'
 
 const updateFeeds = (state) => {
+  console.log('test');
   const { feeds, posts } = state.data;
-  if (feeds.length === 0) return;
-  feeds.map((feed) => {
+  const promises = feeds.map((feed) => {
     axios.get(proxyUrl(feed.link))
     .then((response) => {
       const newPosts = parser(response.data.contents).posts;
@@ -22,7 +22,7 @@ const updateFeeds = (state) => {
     });
   });
 
-  setTimeout(updateFeeds, 5000, state);
+  Promise.all(promises).finally(() => setTimeout(updateFeeds, 5000, state));
 };
 
 export default updateFeeds;

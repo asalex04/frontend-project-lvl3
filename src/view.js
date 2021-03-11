@@ -9,15 +9,15 @@ export default (state, path, elements) => {
     feedSection.innerHTML = '';
     const h2 = document.createElement('h2');
     const ul = document.createElement('ul');
-    h2.innerText = 'Фиды';
+    h2.textContent = i18next.t('feeds');
     ul.classList.add('list-group', 'mb-5');
     state.data.feeds.map((feed) => {
       const li = document.createElement('li');
       li.className = 'list-group-item';
       const h3 = document.createElement('h3');
-      h3.innerText = feed.title;
+      h3.textContent = feed.title;
       const p = document.createElement('p');
-      p.innerText = feed.description;
+      p.textContent = feed.description;
       li.append(h3);
       li.append(p);
       ul.prepend(li);
