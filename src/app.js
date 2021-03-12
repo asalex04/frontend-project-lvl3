@@ -8,18 +8,18 @@ import proxyUrl from './utils.js'
 import updateFeeds from './updateFeeds.js';
 
 const validate = (data, feeds) => {
+  const schema = yup.string().url().required();
   const links = feeds.map((feed) => feed.link);
-  const schema = yup
-    .string()
-    .url()
-    .notOneOf(links, 'notNewUrl');
-  return schema.validateSync(data);  
+  try {
+    schema.notOneOf(links, 'notNewUrl').validateSync(data);
+    return {};
+  } catch (e) {
+    return e.message;
+  }
 };
 
 const updateValidationState = (link, watchedState) => {
-  const errors = validate(link, watchedState.data.feeds)
-  watchedState.form.valid = _.isEqual(errors, {});
-  watchedState.form.errors = errors;
+  return validate(link, watchedState.data.feeds);
 };
 
 export default () => {
@@ -54,7 +54,6 @@ export default () => {
     titleModal: document.querySelector('.modal-title'),
     body: document.querySelector('.modal-body'),
     article: document.querySelector('.full-article'),
-
   };
   
   const watchedState = onChange (state, (path) => {
@@ -68,7 +67,11 @@ export default () => {
     const formData = new FormData(e.target);
     const link = formData.get('url');
     try {
-      updateValidationState(link, watchedState);
+      const error = updateValidationState(link, watchedState);
+      watchedState.form.valid = _.isEqual(error, {});
+      watchedState.form.errors = error;
+      if (!state.form.valid) return;
+     
       watchedState.form.processState = 'sending';
 
       axios.get(proxyUrl(link))
@@ -90,12 +93,11 @@ export default () => {
           watchedState.form.processState = 'finished';
         })
         .catch((error) => {
-          if (error.request) {
+          if (error.message === 'Network Error') {
             watchedState.form.errors = 'requestError';
-          } else if (error.response) {
-            watchedState.form.errors = 'responseError';
+          } else {
+          watchedState.form.errors = 'error'
           }
-          watchedState.form.errors = 'error';
         });
       } catch (error) {
         watchedState.form.errors = error.message;

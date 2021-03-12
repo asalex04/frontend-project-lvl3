@@ -83,9 +83,7 @@ export default (state, path, elements) => {
       processStateHandler(state);
       break;
     case 'form.errors':
-      if (!state.form.valid) {
         renderErrors(state);
-      }
       break;
     case 'modal':
       renderModal(state);
