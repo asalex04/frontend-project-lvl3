@@ -95,9 +95,9 @@ export default () => {
         .catch((error) => {
           if (error.message === 'Network Error') {
             watchedState.form.errors = 'requestError';
-          } else {
-          watchedState.form.errors = 'error'
           }
+          watchedState.form.valid = false;
+          watchedState.form.errors = 'error';
         });
       } catch (error) {
         watchedState.form.errors = error.message;
