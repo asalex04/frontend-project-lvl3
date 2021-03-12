@@ -14,7 +14,4 @@ build:
 lint:
 	npx eslint .
 	
-link:
-	npm link
-
 .PHONY: test
