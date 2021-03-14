@@ -7,19 +7,25 @@ import parser from './parser.js'
 import proxyUrl from './utils.js'
 import updateFeeds from './updateFeeds.js';
 
-const validate = (data, feeds) => {
-  const schema = yup.string().url().required();
+yup.setLocale({
+    string: {
+      url: 'notUrl',
+    },
+    mixed: {
+      required: 'requierd',
+    }
+  });
+const schema = yup.string().url().required();
+
+const validate = (data, watchedState) => {
+  const { feeds } = watchedState.data;
   const links = feeds.map((feed) => feed.link);
   try {
     schema.notOneOf(links, 'notNewUrl').validateSync(data);
-    return {};
+    return null;
   } catch (e) {
     return e.message;
   }
-};
-
-const updateValidationState = (link, watchedState) => {
-  return validate(link, watchedState.data.feeds);
 };
 
 export default () => {
@@ -36,14 +42,7 @@ export default () => {
     modal: null,
     readPosts: [],
   };
-  yup.setLocale({
-    string: {
-      url: 'notUrl',
-    },
-    mixed: {
-      required: 'requierd',
-    }
-  });
+ 
   const form = document.querySelector('.rss-form');
   const elements = {
     input: document.querySelector('.form-control'),
@@ -67,8 +66,9 @@ export default () => {
     const formData = new FormData(e.target);
     const link = formData.get('url');
     try {
-      const error = updateValidationState(link, watchedState);
-      watchedState.form.valid = _.isEqual(error, {});
+      const error = validate(link, watchedState);
+      console.log(error);
+      watchedState.form.valid = _.isEqual(error, null);
       watchedState.form.errors = error;
       if (!state.form.valid) return;
      
@@ -93,11 +93,12 @@ export default () => {
           watchedState.form.processState = 'finished';
         })
         .catch((error) => {
+          watchedState.form.valid = false;
           if (error.message === 'Network Error') {
             watchedState.form.errors = 'requestError';
+          } else {
+            watchedState.form.errors = 'error';
           }
-          watchedState.form.valid = false;
-          watchedState.form.errors = 'error';
         });
       } catch (error) {
         watchedState.form.errors = error.message;
