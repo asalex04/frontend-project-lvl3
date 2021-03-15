@@ -46,6 +46,7 @@ export default (state, path, elements) => {
     currLink.classList.remove('font-weight-bold');
     currLink.className = 'font-weight-normal';
     titleModal.textContent = title;
+    console.log(titleModal.textContent);
     body.textContent = description;
     article.href = link;
   }
@@ -88,6 +89,7 @@ export default (state, path, elements) => {
       }
       break;
     case 'modal':
+      console.log('modal');
       renderModal(state);
       break;
     default:
