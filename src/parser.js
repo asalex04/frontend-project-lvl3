@@ -1,5 +1,3 @@
-const getContent = (node, name) => (node.querySelector(name).textContent);
-
 export default (data) => {
   const domparser = new DOMParser();
   const doc = domparser.parseFromString(data, 'text/xml');
@@ -9,15 +7,15 @@ export default (data) => {
   }
   const arrItems = Array.from(doc.querySelectorAll('item'));
   const items = arrItems.map((elem) => ({
-    title: getContent(elem, 'title'),
-    link: getContent(elem, 'link'),
-    description: getContent(elem, 'description'),
+    title: elem.querySelector('title').textContent,
+    link: elem.querySelector('link').textContent,
+    description: elem.querySelector('description').textContent,
   }));
 
   const feed = {
-    title: getContent(doc, 'title'),
-    description: getContent(doc, 'description'),
-    items,
+    title: doc.querySelector('title').textContent,
+    description: doc.querySelector('description').textContent,
+    // items,
   };
-  return feed;
+  return { feed, items };
 };

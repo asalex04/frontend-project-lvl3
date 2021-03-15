@@ -4,8 +4,35 @@ import axios from 'axios';
 import onChange from 'on-change';
 import view from './view.js';
 import parser from './parser.js'
-import proxyUrl from './utils.js'
-import updateFeeds from './updateFeeds.js';
+
+const period = 5000;
+const proxy = 'https://hexlet-allorigins.herokuapp.com';
+
+const proxyUrl = (link) => {
+  const newUrl = new URL('/get', proxy);
+  newUrl.searchParams.set('url', link);
+  return newUrl.toString();
+}
+
+const updateFeeds = (state) => {
+  const { feeds, posts } = state.data;
+  const promises = feeds.map((feed) => {
+    axios.get(proxyUrl(feed.link))
+    .then((response) => {
+      const newPosts = parser(response.data.contents).posts;
+      const diffPosts = _.differenceWith(posts, newPosts, _.isEqual);
+      posts.push({
+        ...diffPosts,
+        feedId: feed.id,
+        postId: _.uniqueId(),
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  });
+  Promise.all(promises).finally(() => setTimeout(updateFeeds, period, state));
+};
 
 yup.setLocale({
     string: {
@@ -59,8 +86,6 @@ export default () => {
     view(state, path, elements);
   });
   
-  updateFeeds(watchedState);
-  
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -106,4 +131,6 @@ export default () => {
     watchedState.modal = currentPost;
     watchedState.readPosts.push(id);
   })
+  
+  updateFeeds(watchedState);
 };
