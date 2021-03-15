@@ -82,7 +82,7 @@ export default () => {
           description: feed.description,
           link: link,
         });
-        const newPosts = feed.posts.map((post) => ({
+        const newPosts = feed.items.map((post) => ({
           ...post,
           feedId,
           postId: _.uniqueId(),

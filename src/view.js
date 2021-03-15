@@ -9,7 +9,7 @@ export default (state, path, elements) => {
     feedSection.innerHTML = '';
     const h2 = document.createElement('h2');
     const ul = document.createElement('ul');
-    h2.innerText = 'Фиды';
+    h2.innerText = i18next.t('feeds');
     ul.classList.add('list-group', 'mb-5');
     state.data.feeds.map((feed) => {
       const li = document.createElement('li');
@@ -46,7 +46,6 @@ export default (state, path, elements) => {
     currLink.classList.remove('font-weight-bold');
     currLink.className = 'font-weight-normal';
     titleModal.textContent = title;
-    console.log(titleModal.textContent);
     body.textContent = description;
     article.href = link;
   }
@@ -89,7 +88,6 @@ export default (state, path, elements) => {
       }
       break;
     case 'modal':
-      console.log('modal');
       renderModal(state);
       break;
     default:
