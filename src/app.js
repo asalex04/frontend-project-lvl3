@@ -65,45 +65,39 @@ export default () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const link = formData.get('url');
-    try {
-      const error = validate(link, watchedState);
-      console.log(error);
-      watchedState.form.valid = _.isEqual(error, null);
-      watchedState.form.errors = error;
-      if (!state.form.valid) return;
-     
-      watchedState.form.processState = 'sending';
+    const error = validate(link, watchedState);
+    watchedState.form.valid = _.isEqual(error, null);
+    watchedState.form.errors = error;
+    if (!state.form.valid) return;
+    
+    watchedState.form.processState = 'sending';
 
-      axios.get(proxyUrl(link))
-        .then((response) => {
-          const feed = parser(response.data.contents);
-          const feedId = _.uniqueId();
-          state.data.feeds.push({
-            id: feedId,
-            title: feed.title,
-            description: feed.description,
-            link: link,
-          });
-          const newPosts = feed.posts.map((post) => ({
-            ...post,
-            feedId,
-            postId: _.uniqueId(),
-          }));
-          state.data.posts.unshift(newPosts);
-          watchedState.form.processState = 'finished';
-        })
-        .catch((error) => {
-          watchedState.form.valid = false;
-          if (error.message === 'Network Error') {
-            watchedState.form.errors = 'requestError';
-          } else {
-            watchedState.form.errors = 'error';
-          }
+    axios.get(proxyUrl(link))
+      .then((response) => {
+        const feed = parser(response.data.contents);
+        const feedId = _.uniqueId();
+        state.data.feeds.push({
+          id: feedId,
+          title: feed.title,
+          description: feed.description,
+          link: link,
         });
-      } catch (error) {
-        watchedState.form.errors = error.message;
-        watchedState.form.processState = 'failed';
-      }
+        const newPosts = feed.posts.map((post) => ({
+          ...post,
+          feedId,
+          postId: _.uniqueId(),
+        }));
+        state.data.posts.unshift(newPosts);
+        watchedState.form.processState = 'finished';
+      })
+      .catch((error) => {
+        watchedState.form.valid = false;
+        if (error.message === 'Network Error') {
+          watchedState.form.errors = 'requestError';
+        } else {
+          watchedState.form.errors = 'error';
+        }
+      });
   });
 
   elements.postSection.addEventListener('click', (e) => {

@@ -3,6 +3,8 @@ import axios from 'axios';
 import proxyUrl from './utils.js';
 import parser from './parser.js'
 
+const period = 5000;
+
 const updateFeeds = (state) => {
   const { feeds, posts } = state.data;
   const promises = feeds.map((feed) => {
@@ -21,7 +23,7 @@ const updateFeeds = (state) => {
     });
   });
 
-  Promise.all(promises).finally(() => setTimeout(updateFeeds, 5000, state));
+  Promise.all(promises).finally(() => setTimeout(updateFeeds, period, state));
 };
 
 export default updateFeeds;

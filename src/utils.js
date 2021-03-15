@@ -1,5 +1,7 @@
 export default (link) => {
   const proxy = 'https://hexlet-allorigins.herokuapp.com';
   
-  return `${proxy}/get?url=${encodeURIComponent(link)}`;
+  const newUrl = new URL('/get', proxy);
+  newUrl.searchParams.set('url', link);
+  return newUrl.toString();
 }

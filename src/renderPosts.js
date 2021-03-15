@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import i18next from './index.js';
 import _ from 'lodash';
 
 export default (state, elements) => {

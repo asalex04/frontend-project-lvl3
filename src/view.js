@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import i18next from './index.js';
 import renderPosts from './renderPosts.js';
 
 export default (state, path, elements) => {
@@ -53,10 +53,6 @@ export default (state, path, elements) => {
   const processStateHandler = (state) => {
     const { processState } = state.form;
     switch (processState) {
-      case 'failed':
-        renderErrors(state);
-        addButton.disabled = false;
-        break;
       case 'filling':
         addButton.disabled = false;
         break;
@@ -74,7 +70,8 @@ export default (state, path, elements) => {
         input.focus();
         break;
       default:
-        break;
+        break;  
+      // throw Error(`Unknown process status: ${processState}`);
     }
   };
 
@@ -88,9 +85,11 @@ export default (state, path, elements) => {
       }
       break;
     case 'modal':
+      console.log('modal');
       renderModal(state);
       break;
     default:
       break;
+    //throw Error(`Unknown form status: ${path}`);
   }
 };
