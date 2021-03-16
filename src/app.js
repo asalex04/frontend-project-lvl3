@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import axios from 'axios';
 import onChange from 'on-change';
 import i18next from 'i18next';
-import en from './locales/en';
+import ru from './locales/ru';
 import view from './view.js';
 import parser from './parser.js'
 
@@ -77,10 +77,10 @@ export default () => {
   };
   const i18Instance = i18next.createInstance();
   i18Instance.init({
-    lng: 'en',
+    lng: 'ru',
     debug: true,
     resources: {
-      en,
+      ru,
     },
   });
 
