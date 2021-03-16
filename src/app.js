@@ -112,7 +112,7 @@ export default () => {
           feedId,
           postId: _.uniqueId(),
         }));
-        state.data.posts.unshift(newPosts);
+        state.data.posts.unshift(...newPosts);
         watchedState.form.processState = 'finished';
       })
       .catch((error) => {
@@ -127,7 +127,7 @@ export default () => {
 
   elements.postSection.addEventListener('click', (e) => {
     const { id } = e.target.dataset;
-    const currentPost = watchedState.data.posts[0].find((post) => post.postId === id);
+    const currentPost = watchedState.data.posts.find((post) => post.postId === id);
     watchedState.modal = currentPost;
     watchedState.readPosts.push(id);
   })

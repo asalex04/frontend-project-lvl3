@@ -8,10 +8,10 @@ export default {
       notNewUrl: 'RSS already loaded',
       requierd: 'URL is required',
       requestError: 'Network error',
-      responseError: 'Server error',
       error: 'This is not RSS',
     },
     feeds: 'Feeds',
     posts: 'Posts',
+    button: 'Preview',
   },
 };

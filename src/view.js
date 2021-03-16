@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import i18next from 'i18next';
 
 export default (state, path, elements) => {
@@ -7,51 +6,39 @@ export default (state, path, elements) => {
   } = elements;
 
   const renderPosts = (dataPosts) => {
-    console.log(dataPosts);
     postSection.innerHTML= '';
     const title = document.createElement('h2');
-    const ul = document.createElement('ul');
     title.textContent = i18next.t('posts');
+    
+    const ul = document.createElement('ul');
     ul.className ='list-group';
     
     dataPosts.map((post) => {
       const li = document.createElement('li');
-      const a = document.querySelector('a');
-      li.className = 'list-group-item d-flex justify-content-between align-items-start';
-      a.setAttribute('href', post.link);
-      a.setAttribute('target', '_blank');
-      a.className = 'font-weight-bold';
-      a.textContent = post.title;
-      a.dataset.id = post.id;
+      li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
 
-      li.append(a);
+      const link = document.createElement('a');
+      link.setAttribute('href', post.link);
+      link.setAttribute('target', '_blank');
+      link.className = 'font-weight-bold';
+      link.textContent = post.title;
+      link.dataset.id = post.postId;
+
+      const btn = document.createElement('button');
+      btn.classList.add('btn', 'btn-primary', 'btn-sm');
+      btn.textContent = i18next.t('button');
+      btn.setAttribute('type', 'button');
+      btn.dataset.id = post.postId;
+      btn.dataset.toggle = 'modal';
+      btn.dataset.target = '#modal';
+
+      li.append(link);
+      li.append(btn);
       ul.append(li);
-      console.log(post);
     })
     postSection.append(title);
     postSection.append(ul);
-    
   };
-
-  /* const renderPosts = (dataPosts) => {
-    console.log(dataPosts);
-    const title = document.createElement('h2');
-    title.textContent = i18next.t('posts');
-    const container = _.flatten(dataPosts).map((elem) => {
-      const post = `
-        <ul class='list-group'>
-          <li class='list-group-item d-flex justify-content-between align-items-start'>
-            <a href='${elem.link}' class='font-weight-bold' data-id='${elem.postId}' target='_blank'>${elem.title}</a>
-            <button type='button' class='btn btn-primary btn-sm' data-id=${elem.postId} data-toggle='modal' data-target='#modal'>Просмотр</button>
-          </li>
-        </ul>
-        `;
-      return post;
-    }).join('');
-    
-    postSection.innerHTML = container;
-    postSection.prepend(title);
-  }; */
 
   const renderFeeds = (dataFeeds) => {
     feedSection.innerHTML = '';
