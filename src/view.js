@@ -1,6 +1,4 @@
-import i18next from 'i18next';
-
-export default (state, path, elements) => {
+export default (state, path, elements, i18Instance) => {
   const { 
     input, addButton, feedback, titleModal, body, article, feedSection, postSection 
   } = elements;
@@ -8,7 +6,7 @@ export default (state, path, elements) => {
   const renderPosts = (dataPosts) => {
     postSection.innerHTML= '';
     const title = document.createElement('h2');
-    title.textContent = i18next.t('posts');
+    title.textContent = i18Instance.t('posts');
     
     const ul = document.createElement('ul');
     ul.className ='list-group';
@@ -26,7 +24,7 @@ export default (state, path, elements) => {
 
       const btn = document.createElement('button');
       btn.classList.add('btn', 'btn-primary', 'btn-sm');
-      btn.textContent = i18next.t('button');
+      btn.textContent = i18Instance.t('button');
       btn.setAttribute('type', 'button');
       btn.dataset.id = post.postId;
       btn.dataset.toggle = 'modal';
@@ -44,7 +42,7 @@ export default (state, path, elements) => {
     feedSection.innerHTML = '';
     const h2 = document.createElement('h2');
     const ul = document.createElement('ul');
-    h2.textContent = i18next.t('feeds');
+    h2.textContent = i18Instance.t('feeds');
     ul.classList.add('list-group', 'mb-5');
     dataFeeds.map((feed) => {
       const li = document.createElement('li');
@@ -70,13 +68,13 @@ export default (state, path, elements) => {
   const renderErrors = (errors) => {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
-    feedback.textContent = i18next.t(`errors.${errors}`);
+    feedback.textContent = i18Instance.t(`errors.${errors}`);
   };
 
   const renderSuccess = () => {
     feedback.classList.add('text-success');
     feedback.classList.remove('text-danger');
-    feedback.textContent = i18next.t('msg.success');
+    feedback.textContent = i18Instance.t('msg.success');
     input.classList.remove('is-invalid');    
   };
 

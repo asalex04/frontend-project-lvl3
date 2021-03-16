@@ -59,7 +59,7 @@ const validate = (data, watchedState) => {
   }
 };
 
-export default () => {
+export default (i18Instance) => {
   const state = {
     form: {
       processState: 'filling',
@@ -86,7 +86,7 @@ export default () => {
   };
   
   const watchedState = onChange (state, (path) => {
-    view(state, path, elements);
+    view(state, path, elements, i18Instance);
   });
   
   form.addEventListener('submit', (e) => {
