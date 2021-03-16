@@ -3,6 +3,8 @@ import * as yup from 'yup';
 import axios from 'axios';
 import 'bootstrap';
 import onChange from 'on-change';
+import i18next from 'i18next';
+import en from './locales/en';
 import view from './view.js';
 import parser from './parser.js'
 
@@ -60,7 +62,7 @@ const validate = (data, watchedState) => {
   }
 };
 
-export default (i18Instance) => {
+export default () => {
   const state = {
     form: {
       processState: 'filling',
@@ -74,6 +76,15 @@ export default (i18Instance) => {
     modal: null,
     readPostsId: [],
   };
+  const i18Instance = i18next.createInstance();
+  i18Instance.init({
+    lng: 'en',
+    debug: true,
+    resources: {
+      en,
+    },
+  });
+
   const form = document.querySelector('.rss-form');
   const elements = {
     input: document.querySelector('.form-control'),
