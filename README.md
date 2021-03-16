@@ -9,10 +9,16 @@
 A service for aggregating RSS feeds, with the help of which it is convenient to read various sources, for example, blogs. It allows you to add an unlimited number of RSS feeds, updates them and adds new entries to the general stream.
 
 ### Install
-```$ make install```
+```
+$ make install
+```
 
 ### Production
-```$ make build```
+```
+$ make build
+```
 
 ### Development
-```$ make develop```
+```
+$ make develop
+```
