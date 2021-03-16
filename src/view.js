@@ -61,8 +61,13 @@ export default (state, path, elements) => {
     feedSection.append(ul);
   }; 
 
-  const renderErrors = (state) => {
-    const { errors } = state.form;
+  const renderValid = (valid) => {
+    if (valid) {
+      input.classList.remove('is-invalid');
+      feedback.classList.remove('text-danger');
+    }
+  }
+  const renderErrors = (errors) => {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
     feedback.textContent = i18next.t(`errors.${errors}`);
@@ -89,7 +94,7 @@ export default (state, path, elements) => {
     const { processState } = state.form;
     switch (processState) {
       case 'failed':
-        renderErrors(state);
+        renderErrors(state.form.errors);
         addButton.disabled = false;
         break;
       case 'filling':
@@ -109,7 +114,7 @@ export default (state, path, elements) => {
         input.focus();
         break;
       default:
-        break;
+        throw Error(`Unknown form status: ${processState}`);
     }
   };
 
@@ -119,13 +124,19 @@ export default (state, path, elements) => {
       break;
     case 'form.errors':
       if (!state.form.valid) {
-        renderErrors(state);
+        renderErrors(state.form.errors);
       }
+      break;
+    case 'form.valid':
+      renderValid(state.form.valid);
+      break;
+    case 'data.posts':
+      renderPosts(state.data.posts);
       break;
     case 'modal':
       renderModal(state);
       break;
     default:
-      break;
+      throw Error(`Unknown form status1: ${path}`);
   }
 };

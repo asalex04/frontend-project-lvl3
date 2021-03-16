@@ -16,21 +16,25 @@ const proxyUrl = (link) => {
 
 const updateFeeds = (state) => {
   const { feeds, posts } = state.data;
+  const savedPosts = posts.map((post) => (_.omit(post, ['id', 'feedId'])));
   const promises = feeds.map((feed) => {
     axios.get(proxyUrl(feed.link))
     .then((response) => {
-      const newPosts = parser(response.data.contents).posts;
-      const diffPosts = _.differenceWith(posts, newPosts, _.isEqual);
-      posts.push({
-        ...diffPosts,
-        feedId: feed.id,
-        postId: _.uniqueId(),
-      });
+      const newPosts = parser(response.data.contents).items;
+      const diffPosts = _.differenceWith(savedPosts, newPosts, (a, b) => a.title === b.title);
+      if (diffPosts.length !== 0) {
+        posts.push({
+          ...diffPosts,
+          feedId: feed.id,
+          postId: _.uniqueId(),
+        });
+      }
     })
     .catch((error) => {
       console.log(error);
     });
   });
+
   Promise.all(promises).finally(() => setTimeout(updateFeeds, period, state));
 };
 
@@ -67,9 +71,8 @@ export default () => {
       posts: [],
     },
     modal: null,
-    readPosts: [],
+    readPostsId: [],
   };
- 
   const form = document.querySelector('.rss-form');
   const elements = {
     input: document.querySelector('.form-control'),
@@ -127,9 +130,9 @@ export default () => {
 
   elements.postSection.addEventListener('click', (e) => {
     const { id } = e.target.dataset;
-    const currentPost = watchedState.data.posts.find((post) => post.postId === id);
+    const currentPost = state.data.posts.find((post) => post.postId === id);
+    state.readPostsId.push(id);
     watchedState.modal = currentPost;
-    watchedState.readPosts.push(id);
   })
   
   updateFeeds(watchedState);
