@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import * as yup from 'yup';
 import axios from 'axios';
+import 'bootstrap';
 import onChange from 'on-change';
 import view from './view.js';
 import parser from './parser.js'
