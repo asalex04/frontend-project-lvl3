@@ -60,6 +60,14 @@ export default () => {
     resources: {
       ru,
     },
+  })
+  yup.setLocale({
+    string: {
+      url: 'notUrl',
+    },
+    mixed: {
+      required: 'requierd',
+    }
   }).then(() => {
     const state = {
       form: {
@@ -74,15 +82,6 @@ export default () => {
       modal: null,
       readPostsId: [],
     };
-
-    yup.setLocale({
-      string: {
-        url: 'notUrl',
-      },
-      mixed: {
-        required: 'requierd',
-      }
-    });
     const schema = yup.string().url().required();
 
     const form = document.querySelector('.rss-form');
