@@ -41,17 +41,7 @@ const updateFeeds = (state) => {
   Promise.all(promises).finally(() => setTimeout(updateFeeds, period, state));
 };
 
-yup.setLocale({
-    string: {
-      url: 'notUrl',
-    },
-    mixed: {
-      required: 'requierd',
-    }
-  });
-const schema = yup.string().url().required();
-
-const validate = (data, watchedState) => {
+const validate = (data, watchedState, schema) => {
   const { feeds } = watchedState.data;
   const links = feeds.map((feed) => feed.link);
   try {
@@ -63,19 +53,6 @@ const validate = (data, watchedState) => {
 };
 
 export default () => {
-  const state = {
-    form: {
-      processState: 'filling',
-      valid: true,
-      errors: {},
-    },
-    data: {
-      feeds: [],
-      posts: [],
-    },
-    modal: null,
-    readPostsId: [],
-  };
   const i18Instance = i18next.createInstance();
   i18Instance.init({
     lng: 'ru',
@@ -83,69 +60,92 @@ export default () => {
     resources: {
       ru,
     },
-  });
+  }).then(() => {
+    const state = {
+      form: {
+        processState: 'filling',
+        valid: true,
+        errors: {},
+      },
+      data: {
+        feeds: [],
+        posts: [],
+      },
+      modal: null,
+      readPostsId: [],
+    };
 
-  const form = document.querySelector('.rss-form');
-  const elements = {
-    input: document.querySelector('.form-control'),
-    addButton: document.querySelector('.btn-primary'),
-    feedback: document.querySelector('.feedback'),
-    feedSection: document.querySelector('.feeds'),
-    postSection: document.querySelector('.posts'),
-    titleModal: document.querySelector('.modal-title'),
-    body: document.querySelector('.modal-body'),
-    article: document.querySelector('.full-article'),
-  };
-  
-  const watchedState = onChange (state, (path) => {
-    view(state, path, elements, i18Instance);
-  });
-  
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const link = formData.get('url');
-    const error = validate(link, watchedState);
-    watchedState.form.valid = _.isEqual(error, null);
-    watchedState.form.errors = error;
-    if (!state.form.valid) return;
-    
-    watchedState.form.processState = 'sending';
+    yup.setLocale({
+      string: {
+        url: 'notUrl',
+      },
+      mixed: {
+        required: 'requierd',
+      }
+    });
+    const schema = yup.string().url().required();
 
-    axios.get(proxyUrl(link))
-      .then((response) => {
-        const feed = parser(response.data.contents);
-        const feedId = _.uniqueId();
-        state.data.feeds.push({
-          id: feedId,
-          title: feed.title,
-          description: feed.description,
-          link: link,
+    const form = document.querySelector('.rss-form');
+    const elements = {
+      input: document.querySelector('.form-control'),
+      addButton: document.querySelector('.btn-primary'),
+      feedback: document.querySelector('.feedback'),
+      feedSection: document.querySelector('.feeds'),
+      postSection: document.querySelector('.posts'),
+      titleModal: document.querySelector('.modal-title'),
+      body: document.querySelector('.modal-body'),
+      article: document.querySelector('.full-article'),
+    };
+
+    const watchedState = onChange (state, (path) => {
+      view(state, path, elements, i18Instance);
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const link = formData.get('url');
+      const error = validate(link, watchedState, schema);
+      watchedState.form.valid = _.isEqual(error, null);
+      watchedState.form.errors = error;
+      if (!state.form.valid) return;
+
+      watchedState.form.processState = 'sending';
+
+      axios.get(proxyUrl(link))
+        .then((response) => {
+          const feed = parser(response.data.contents);
+          const feedId = _.uniqueId();
+          state.data.feeds.push({
+            id: feedId,
+            title: feed.title,
+            description: feed.description,
+            link: link,
+          });
+          const newPosts = feed.items.map((post) => ({
+            ...post,
+            feedId,
+            postId: _.uniqueId(),
+          }));
+          state.data.posts.unshift(...newPosts);
+          watchedState.form.processState = 'finished';
+        })
+        .catch((error) => {
+          watchedState.form.valid = false;
+          if (error.message === 'Network Error') {
+            watchedState.form.errors = 'requestError';
+          } else {
+            watchedState.form.errors = 'error';
+          }
         });
-        const newPosts = feed.items.map((post) => ({
-          ...post,
-          feedId,
-          postId: _.uniqueId(),
-        }));
-        state.data.posts.unshift(...newPosts);
-        watchedState.form.processState = 'finished';
-      })
-      .catch((error) => {
-        watchedState.form.valid = false;
-        if (error.message === 'Network Error') {
-          watchedState.form.errors = 'requestError';
-        } else {
-          watchedState.form.errors = 'error';
-        }
-      });
-  });
-
-  elements.postSection.addEventListener('click', (e) => {
-    const { id } = e.target.dataset;
-    const currentPost = state.data.posts.find((post) => post.postId === id);
-    state.readPostsId.push(id);
-    watchedState.modal = currentPost;
-  })
+    });
   
-  updateFeeds(watchedState);
-};
+    elements.postSection.addEventListener('click', (e) => {
+      const { id } = e.target.dataset;
+      const currentPost = state.data.posts.find((post) => post.postId === id);
+      state.readPostsId.push(id);
+      watchedState.modal = currentPost;
+    })
+
+    updateFeeds(watchedState);
+  })};
