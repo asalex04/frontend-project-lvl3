@@ -100,6 +100,7 @@ export default (state, path, elements, i18Instance) => {
         break;
       case 'sending':
         addButton.disabled = true;
+        input.setAttribute('readonly', true);
         feedback.classList.remove('text-danger', 'text-success');
         feedback.textContent = '';
         break;
@@ -108,6 +109,7 @@ export default (state, path, elements, i18Instance) => {
         renderFeeds(state.data.feeds);
         renderPosts(state.data.posts);
         addButton.disabled = false;
+        input.removeAttribute('readonly');
         input.value = null;
         input.focus();
         break;
