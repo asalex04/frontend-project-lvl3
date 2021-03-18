@@ -54,23 +54,14 @@ const validate = (data, watchedState, schema) => {
 
 export default () => {
   const i18Instance = i18next.createInstance();
-  return i18Instance.init({
+  i18Instance.init({
     lng: 'ru',
     debug: true,
     resources: {
       ru,
     },
-  })
-  .then(() => {
-    yup.setLocale({
-      string: {
-        url: 'notUrl',
-      },
-      mixed: {
-        required: 'requierd',
-      }
-    });
-  })
+  }) 
+  .then (() => {return i18Instance})
   .then(() => {
     const state = {
       form: {
@@ -85,6 +76,14 @@ export default () => {
       modal: null,
       readPostsId: [],
     };
+     yup.setLocale({
+      string: {
+        url: 'notUrl',
+      },
+      mixed: {
+        required: 'requierd',
+      }
+    });
     const schema = yup.string().url().required();
 
     const form = document.querySelector('.rss-form');
