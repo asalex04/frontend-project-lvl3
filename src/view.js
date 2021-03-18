@@ -95,12 +95,10 @@ export default (state, path, elements, i18Instance) => {
         renderErrors(state.form.errors);
         addButton.disabled = false;
         break;
-      case 'filling':
-        addButton.disabled = false;
-        break;
       case 'sending':
         addButton.disabled = true;
         input.setAttribute('readonly', true);
+        input.classList.remove('is-invalid');
         feedback.classList.remove('text-danger', 'text-success');
         feedback.textContent = '';
         break;
@@ -110,6 +108,7 @@ export default (state, path, elements, i18Instance) => {
         renderPosts(state.data.posts);
         addButton.disabled = false;
         input.removeAttribute('readonly');
+        input.classList.remove('is-invalid');
         input.value = null;
         input.focus();
         break;

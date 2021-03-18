@@ -49,7 +49,6 @@ const validate = (data, watchedState, schema) => {
     schema.notOneOf(links, 'notNewUrl').validateSync(data);
     return null;
   } catch (e) {
-    console.log(e.message);
     return e.message;
   }
 };
