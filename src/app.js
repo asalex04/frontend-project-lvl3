@@ -54,7 +54,7 @@ const validate = (data, watchedState, schema) => {
 
 export default () => {
   const i18Instance = i18next.createInstance();
-  i18Instance.init({
+  return i18Instance.init({
     lng: 'ru',
     debug: true,
     resources: {
@@ -70,7 +70,6 @@ export default () => {
         required: 'requierd',
       }
     });
-    return i18Instance;
   })
   .then(() => {
     const state = {
