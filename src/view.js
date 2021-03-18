@@ -93,10 +93,11 @@ export default (state, path, elements, i18Instance) => {
     switch (processState) {
       case 'failed':
         renderErrors(state.form.errors);
-        addButton.disabled = false;
+        addButton.removeAttribute('disabled');
+        input.removeAttribute('readonly');
         break;
       case 'sending':
-        addButton.disabled = true;
+        addButton.setAttribute('disabled', true);
         input.setAttribute('readonly', true);
         input.classList.remove('is-invalid');
         feedback.classList.remove('text-danger', 'text-success');
@@ -106,7 +107,7 @@ export default (state, path, elements, i18Instance) => {
         renderSuccess();
         renderFeeds(state.data.feeds);
         renderPosts(state.data.posts);
-        addButton.disabled = false;
+        addButton.removeAttribute('disabled');
         input.removeAttribute('readonly');
         input.classList.remove('is-invalid');
         input.value = null;
