@@ -49,6 +49,7 @@ const validate = (data, watchedState, schema) => {
     schema.notOneOf(links, 'notNewUrl').validateSync(data);
     return null;
   } catch (e) {
+    console.log(e.message);
     return e.message;
   }
 };
@@ -133,7 +134,7 @@ export default () => {
         })
         .catch((error) => {
           watchedState.form.valid = false;
-          if (error.message === 'Network Error') {
+          if (error.isAxiosError) {
             watchedState.form.errors = 'requestError';
           } else {
             watchedState.form.errors = 'error';
