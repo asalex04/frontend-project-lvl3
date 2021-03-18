@@ -89,7 +89,7 @@ export default () => {
     const form = document.querySelector('.rss-form');
     const elements = {
       input: document.querySelector('.form-control'),
-      addButton: document.querySelector('.btn-primary'),
+      addButton: document.querySelector('[aria-label="add"]'),
       feedback: document.querySelector('.feedback'),
       feedSection: document.querySelector('.feeds'),
       postSection: document.querySelector('.posts'),
