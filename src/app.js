@@ -70,6 +70,7 @@ export default () => {
         required: 'requierd',
       }
     });
+    return i18Instance;
   })
   .then(() => {
     const state = {
@@ -85,8 +86,6 @@ export default () => {
       modal: null,
       readPostsId: [],
     };
-
-    
     const schema = yup.string().url().required();
 
     const form = document.querySelector('.rss-form');
