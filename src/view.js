@@ -59,17 +59,20 @@ export default (state, path, elements, i18Instance) => {
     feedSection.append(ul);
   };
 
-  const renderValid = (valid) => {
-    if (valid) {
-      input.classList.remove('is-invalid');
-      feedback.classList.remove('text-danger');
-    }
-  };
   const renderErrors = (errors) => {
     input.classList.add('is-invalid');
     input.removeAttribute('readonly');
     feedback.classList.add('text-danger');
     feedback.textContent = i18Instance.t(`errors.${errors}`);
+  };
+
+  const renderValid = (valid) => {
+    if (valid) {
+      input.classList.remove('is-invalid');
+      feedback.classList.remove('text-danger');
+    } else {
+      renderErrors(state.form.errors);
+    }
   };
 
   const renderSuccess = () => {
@@ -126,13 +129,11 @@ export default (state, path, elements, i18Instance) => {
       processStateHandler(state);
       break;
     case 'form.errors':
-      if (!state.form.valid) {
-        renderErrors(state.form.errors);
-      }
-      break;
-    case 'form.valid':
       renderValid(state.form.valid);
       break;
+    // case 'form.valid':
+    //   renderValid(state.form.valid);
+    //   break;
     case 'data.posts':
       renderPosts(state.data.posts);
       break;

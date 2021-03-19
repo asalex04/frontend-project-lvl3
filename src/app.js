@@ -130,7 +130,7 @@ export default () => {
             watchedState.form.processState = 'finished';
           })
           .catch((err) => {
-            watchedState.form.valid = false;
+            state.form.valid = false;
             if (err.isAxiosError) {
               watchedState.form.errors = 'requestError';
             } else {
