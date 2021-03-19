@@ -100,7 +100,7 @@ export default (state, path, elements, i18Instance) => {
       case 'sending':
         //console.log('sending');
         addButton.setAttribute('disabled', true);
-        //input.setAttribute('readonly', true);
+        input.setAttribute('readonly', true);
         input.classList.remove('is-invalid');
         feedback.classList.remove('text-danger', 'text-success');
         feedback.textContent = '';
