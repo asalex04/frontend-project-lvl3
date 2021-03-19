@@ -21,7 +21,7 @@ const proxyUrl = (link) => {
 const updateFeeds = (state) => {
   const { feeds, posts } = state.data;
   const savedPosts = posts.map((post) => (_.omit(post, ['id', 'feedId'])));
-  const promises = feeds.map((feed) => {
+  const promises = feeds.forEach((feed) => {
     axios.get(proxyUrl(feed.link))
       .then((response) => {
         const newPosts = parser(response.data.contents).items;

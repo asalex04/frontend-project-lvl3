@@ -11,7 +11,7 @@ export default (state, path, elements, i18Instance) => {
     const ul = document.createElement('ul');
     ul.className = 'list-group';
 
-    dataPosts.map((post) => {
+    dataPosts.forEach((post) => {
       const li = document.createElement('li');
       li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
 
@@ -44,7 +44,7 @@ export default (state, path, elements, i18Instance) => {
     const ul = document.createElement('ul');
     h2.textContent = i18Instance.t('feeds');
     ul.classList.add('list-group', 'mb-5');
-    dataFeeds.map((feed) => {
+    dataFeeds.forEach((feed) => {
       const li = document.createElement('li');
       li.className = 'list-group-item';
       const h3 = document.createElement('h3');
