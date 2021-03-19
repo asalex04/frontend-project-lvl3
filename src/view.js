@@ -1,16 +1,16 @@
 export default (state, path, elements, i18Instance) => {
-  const { 
-    input, addButton, feedback, titleModal, body, article, feedSection, postSection 
+  const {
+    input, addButton, feedback, titleModal, body, article, feedSection, postSection,
   } = elements;
 
   const renderPosts = (dataPosts) => {
-    postSection.innerHTML= '';
+    postSection.innerHTML = '';
     const title = document.createElement('h2');
     title.textContent = i18Instance.t('posts');
-    
+
     const ul = document.createElement('ul');
-    ul.className ='list-group';
-    
+    ul.className = 'list-group';
+ 
     dataPosts.map((post) => {
       const li = document.createElement('li');
       li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
@@ -33,7 +33,7 @@ export default (state, path, elements, i18Instance) => {
       li.append(link);
       li.append(btn);
       ul.append(li);
-    })
+    });
     postSection.append(title);
     postSection.append(ul);
   };
@@ -57,7 +57,7 @@ export default (state, path, elements, i18Instance) => {
     });
     feedSection.append(h2);
     feedSection.append(ul);
-  }; 
+  };
 
   const renderValid = (valid) => {
     if (valid) {
@@ -76,11 +76,13 @@ export default (state, path, elements, i18Instance) => {
     feedback.classList.add('text-success');
     feedback.classList.remove('text-danger');
     feedback.textContent = i18Instance.t('msg.success');
-    input.classList.remove('is-invalid');    
+    input.classList.remove('is-invalid');
   };
 
-  const renderModal = (state) => {
-    const { title, description, link, postId } = state.modal;
+  const renderModal = (stateModal) => {
+    const {
+      title, description, link, postId,
+    } = stateModal.modal;
     const currLink = document.querySelector(`[data-id = '${postId}']`);
     currLink.classList.remove('font-weight-bold');
     currLink.className = 'font-weight-normal';
@@ -89,16 +91,15 @@ export default (state, path, elements, i18Instance) => {
     article.href = link;
   }
 
-  const processStateHandler = (state) => {
-    const { processState } = state.form;
+  const processStateHandler = (stateHandler) => {
+    const { processState } = stateHandler.form;
     switch (processState) {
       case 'failed':
-        renderErrors(state.form.errors);
+        renderErrors(stateHandler.form.errors);
         addButton.removeAttribute('disabled');
         input.removeAttribute('readonly');
         break;
       case 'sending':
-        //console.log('sending');
         addButton.setAttribute('disabled', true);
         input.setAttribute('readonly', true);
         input.classList.remove('is-invalid');
@@ -107,8 +108,8 @@ export default (state, path, elements, i18Instance) => {
         break;
       case 'finished':
         renderSuccess();
-        renderFeeds(state.data.feeds);
-        renderPosts(state.data.posts);
+        renderFeeds(stateHandler.data.feeds);
+        renderPosts(stateHandler.data.posts);
         addButton.removeAttribute('disabled');
         input.removeAttribute('readonly');
         input.classList.remove('is-invalid');
