@@ -65,7 +65,7 @@ export default () => {
         form: {
           processState: 'filling',
           valid: true,
-          errors: {},
+          errors: null,
         },
         data: {
           feeds: [],
@@ -130,7 +130,7 @@ export default () => {
             watchedState.form.processState = 'finished';
           })
           .catch((err) => {
-            state.form.valid = false;
+            watchedState.form.valid = false;
             if (err.isAxiosError) {
               watchedState.form.errors = 'requestError';
             } else {
