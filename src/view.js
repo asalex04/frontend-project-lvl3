@@ -10,7 +10,7 @@ export default (state, path, elements, i18Instance) => {
 
     const ul = document.createElement('ul');
     ul.className = 'list-group';
- 
+
     dataPosts.map((post) => {
       const li = document.createElement('li');
       li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
@@ -64,7 +64,7 @@ export default (state, path, elements, i18Instance) => {
       input.classList.remove('is-invalid');
       feedback.classList.remove('text-danger');
     }
-  }
+  };
   const renderErrors = (errors) => {
     input.classList.add('is-invalid');
     input.removeAttribute('readonly');
@@ -89,7 +89,7 @@ export default (state, path, elements, i18Instance) => {
     titleModal.textContent = title;
     body.textContent = description;
     article.href = link;
-  }
+  };
 
   const processStateHandler = (stateHandler) => {
     const { processState } = stateHandler.form;
