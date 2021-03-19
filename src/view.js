@@ -67,6 +67,7 @@ export default (state, path, elements, i18Instance) => {
   }
   const renderErrors = (errors) => {
     input.classList.add('is-invalid');
+    input.removeAttribute('readonly');
     feedback.classList.add('text-danger');
     feedback.textContent = i18Instance.t(`errors.${errors}`);
   };
@@ -97,8 +98,9 @@ export default (state, path, elements, i18Instance) => {
         input.removeAttribute('readonly');
         break;
       case 'sending':
+        //console.log('sending');
         addButton.setAttribute('disabled', true);
-        input.setAttribute('readonly', true);
+        //input.setAttribute('readonly', true);
         input.classList.remove('is-invalid');
         feedback.classList.remove('text-danger', 'text-success');
         feedback.textContent = '';

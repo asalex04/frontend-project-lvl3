@@ -136,8 +136,11 @@ export default () => {
           if (error.isAxiosError) {
             watchedState.form.errors = 'requestError';
           } else {
+            console.log('error');
             watchedState.form.errors = 'error';
           }
+          console.log('failed');
+          watchedState.form.processState = 'failed';
         });
     });
   
