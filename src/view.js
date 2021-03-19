@@ -60,18 +60,16 @@ export default (state, path, elements, i18Instance) => {
   };
 
   const renderErrors = (errors) => {
-    if (errors) {
-      input.classList.add('is-invalid');
-      input.removeAttribute('readonly');
-      feedback.classList.add('text-danger');
-      feedback.textContent = i18Instance.t(`errors.${errors}`);
-    }
+    input.classList.add('is-invalid');
+    input.removeAttribute('readonly');
+    feedback.classList.add('text-danger');
+    feedback.textContent = i18Instance.t(`errors.${errors}`);
   };
 
-  const renderValid = (formValid) => {
-    const { valid, error } = formValid;
-    if (!valid && error) {
-      renderErrors(error);
+  const handleForm = (formValid) => {
+    const { valid, errors } = formValid;
+    if (!valid) {
+      renderErrors(errors);
     } else {
       input.classList.remove('is-invalid');
       feedback.classList.remove('text-danger');
@@ -131,11 +129,8 @@ export default (state, path, elements, i18Instance) => {
     case 'form.processState':
       processStateHandler(state);
       break;
-    case 'form.errors':
-      renderErrors(state.form.errors);
-      break;
     case 'form.valid':
-      renderValid(state.form);
+      handleForm(state.form);
       break;
     case 'data.posts':
       renderPosts(state.data.posts);
@@ -144,6 +139,6 @@ export default (state, path, elements, i18Instance) => {
       renderModal(state);
       break;
     default:
-      throw Error(`Unknown form status: ${path}`);
+      break;
   }
 };

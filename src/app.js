@@ -102,11 +102,12 @@ export default () => {
 
       form.addEventListener('submit', (e) => {
         e.preventDefault();
+        watchedState.form.valid = true;
         const formData = new FormData(e.target);
         const url = formData.get('url');
         const error = validate(url, watchedState, schema);
-        watchedState.form.valid = _.isEqual(error, null);
         watchedState.form.errors = error;
+        watchedState.form.valid = _.isEqual(error, null);
         if (!state.form.valid) return;
 
         watchedState.form.processState = 'sending';
@@ -130,12 +131,12 @@ export default () => {
             watchedState.form.processState = 'finished';
           })
           .catch((err) => {
-            watchedState.form.valid = false;
             if (err.isAxiosError) {
               watchedState.form.errors = 'requestError';
             } else {
               watchedState.form.errors = 'error';
             }
+            watchedState.form.valid = false;
             watchedState.form.processState = 'failed';
           });
       });
