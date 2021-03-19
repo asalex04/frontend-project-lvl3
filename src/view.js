@@ -60,10 +60,12 @@ export default (state, path, elements, i18Instance) => {
   };
 
   const renderErrors = (errors) => {
-    input.classList.add('is-invalid');
-    input.removeAttribute('readonly');
-    feedback.classList.add('text-danger');
-    feedback.textContent = i18Instance.t(`errors.${errors}`);
+    if (errors) {
+      input.classList.add('is-invalid');
+      input.removeAttribute('readonly');
+      feedback.classList.add('text-danger');
+      feedback.textContent = i18Instance.t(`errors.${errors}`);
+    }
   };
 
   const renderValid = (formValid) => {
@@ -130,9 +132,7 @@ export default (state, path, elements, i18Instance) => {
       processStateHandler(state);
       break;
     case 'form.errors':
-      if (state.form.errors) {
-        renderErrors(state.form.errors);
-      }
+      renderErrors(state.form.errors);
       break;
     case 'form.valid':
       renderValid(state.form);
