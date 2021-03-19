@@ -21,23 +21,21 @@ const proxyUrl = (link) => {
 const updateFeeds = (state) => {
   const { feeds, posts } = state.data;
   const savedPosts = posts.map((post) => (_.omit(post, ['id', 'feedId'])));
-  const promises = feeds.map((feed) => {
-    axios.get(proxyUrl(feed.link))
-      .then((response) => {
-        const newPosts = parser(response.data.contents).items;
-        const diffPosts = _.differenceWith(savedPosts, newPosts, (a, b) => a.title === b.title);
-        if (diffPosts.length !== 0) {
-          posts.push({
-            ...diffPosts,
-            feedId: feed.id,
-            postId: _.uniqueId(),
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+  const promises = feeds.map((feed) => axios.get(proxyUrl(feed.link))
+    .then((response) => {
+      const newPosts = parser(response.data.contents).items;
+      const diffPosts = _.differenceWith(savedPosts, newPosts, (a, b) => a.title === b.title);
+      if (diffPosts.length !== 0) {
+        posts.push({
+          ...diffPosts,
+          feedId: feed.id,
+          postId: _.uniqueId(),
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    }));
 
   Promise.all(promises).finally(() => setTimeout(updateFeeds, period, state));
 };
